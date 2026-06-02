@@ -25,18 +25,18 @@ Dense Top500 -> Local Hybrid Top20 -> Metadata-aware Rerank Top5
 ```text
 FinRAG/
 ├── data/
-│   ├── pdfs/              # 原始 PDF，自行放入，不提交 Git
-│   ├── parsed/            # PDF 解析后的 Markdown，不提交 Git
-│   ├── chunks/            # 切块结果，不提交 Git
-│   ├── indexes/           # FAISS index 和 metadata，不提交 Git
-│   └── eval_set/          # 小规模评测集，保留提交
-├── experiments/           # 评测报告输出，不提交 Git
+│   ├── pdfs/              # 原始 PDF，自行放入
+│   ├── parsed/            # PDF 解析后的 Markdown
+│   ├── chunks/            # 切块结果
+│   ├── indexes/           # FAISS index 和 metadata
+│   └── eval_set/          # 小规模评测集，
+├── experiments/           # 评测报告输出
 ├── src/
 │   ├── parsing/           # PDF 解析
 │   ├── chunking/          # 表格保护切块
 │   ├── indexing/          # FAISS 建索引
-│   ├── retrieval/         # Metadata Routing + Dense/BM25/Hybrid 召回
-│   ├── rerank/            # Metadata-aware bge reranker
+│   ├── retrieval/         # Dense/BM25/Hybrid 召回
+│   ├── rerank/            # reranker
 │   ├── generation/        # Qwen3-8B 证据绑定生成
 │   ├── evaluation/        # 召回 / 重排评测
 │   └── demo/              # Streamlit 演示
@@ -46,25 +46,13 @@ FinRAG/
 
 ## 环境
 
-建议 Python 3.10+。Qwen3 需要较新的 Transformers：
+建议 Python 3.10+
 
 ```bash
 pip install -r requirements.txt
 ```
 
-如果服务器使用 GPU FAISS，建议用 conda 安装对应 CUDA 版本的 `faiss-gpu`，并删掉或忽略 `requirements.txt` 里的 `faiss-cpu`：
-
-```bash
-conda install -c pytorch -c nvidia faiss-gpu
-```
-
 本项目默认模型路径是实验服务器上的本地 HuggingFace cache，可在命令行参数中覆盖：
-
-```text
-Embedding: /9_data/ypq/.cache/huggingface/hub/models--BAAI--bge-large-zh-v1.5/snapshots/79e7739b6ab944e86d6171e44d24c997fc1e0116
-Reranker : /9_data/ypq/.cache/huggingface/hub/models--BAAI--bge-reranker-v2-m3/snapshots/953dc6f6f85a1b2dbfca4c34a2796e7dde08d41e
-Generator: /9_data/ypq/.cache/huggingface/hub/models--Qwen--Qwen3-8B/snapshots/b968826d9c46dd6066d109eabc6255188de91218
-```
 
 ## 1. PDF 解析
 
@@ -131,7 +119,6 @@ python src/evaluation/metadata_retrieval_eval.py \
 固定召回方案为 `metadata_retrieval_eval.py` 里的 Hybrid，只比较 FAISS 索引类型：
 
 ```bash
-CUDA_VISIBLE_DEVICES=6 \
 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
 python src/evaluation/faiss_index_hybrid_eval.py \
   --chunks_file data/chunks/all_cs1024_ov50.jsonl \
@@ -168,7 +155,6 @@ experiments/faiss_index_hybrid_eval_details.json
 
 说明：
 
-- `Recall@10` 默认使用 `hybrid_evidence_rank`，也就是证据级命中。
 - 查询延迟统计单条 query 的 Hybrid 召回评测耗时，不包含模型和索引加载时间。
 - 构建时间统计 FAISS index 训练 / add 向量耗时，不包含 embedding 生成时间。
 - 内存占用使用 FAISS index 序列化大小估算，便于 Flat / IVF / HNSW 横向比较。
@@ -238,9 +224,6 @@ Demo 页面包含：
 - 显示是否触发低置信度拒答
 
 ## GitHub 说明
-
-`data/pdfs/`、`data/parsed/`、`data/chunks/`、`data/indexes/` 和 `experiments/` 默认不提交，因为这些目录通常包含大文件或运行产物。评测集 `data/eval_set/*.jsonl` 会保留。
-
 实验结果归档在 [docs/results](./docs/results/README.md)，包括：
 
 - FAISS 索引对比

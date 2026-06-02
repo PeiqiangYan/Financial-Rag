@@ -1,0 +1,15 @@
+numpy
+pymupdf
+pdfplumber
+Pillow
+scikit-learn
+faiss-cpu
+FlagEmbedding
+jieba
+rank-bm25
+torch
+transformers>=4.51.0,<5.0.0
+tokenizers>=0.21.0,<0.22.0
+accelerate
+safetensors
+streamlit

@@ -1,0 +1,5 @@
+{"query":"宁德时代2025年营业收入是多少？","ground_truth_doc_id":"宁德时代2025年年度报告","answer":"423,701,834千元","question_type":"fact","must_contain":["营业收入"]}
+{"query":"宁德时代2025年研发费用是多少？","ground_truth_doc_id":"宁德时代2025年年度报告","answer":"22,146,581千元","question_type":"fact","must_contain":["研发费用"]}
+{"query":"宁德时代2025年动力电池销量是多少？","ground_truth_doc_id":"宁德时代2025年年度报告","answer":"动力电池销量541GWh","question_type":"fact","must_contain":["动力电池销量"]}
+{"query":"宁德时代2025年储能电池销量是多少？","ground_truth_doc_id":"宁德时代2025年年度报告","answer":"储能电池销量121GWh","question_type":"fact","must_contain":["储能电池销量"]}
+{"query":"比亚迪2025年归属于上市公司股东的净利润是多少？","ground_truth_doc_id":"比亚迪：2025年年度报告","answer":"32,619,022,000.00元","question_type":"fact","must_contain":["归属于上市公司股东的净利润"]}

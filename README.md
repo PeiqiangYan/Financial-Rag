@@ -72,7 +72,7 @@ pip install -r requirements.txt
 | 1024 | 200 | 205 | 66619 | 50563 | 16056 | 735.52 | 30 | 5604 | `/9_data/ypq/FinRAG/data/chunks/all_cs1024_ov200.jsonl` |
 ## 3. FAISS 建索引
 
-对最终 chunk 文件建 Flat index：
+对最终 chunk 文件 all_cs1024_ov50.jsonl 构建 Flat index
 
 ## 4. 基础召回评测
 构建评测集：

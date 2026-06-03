@@ -81,6 +81,7 @@ pip install -r requirements.txt
 
 评测 Dense、BM25、Hybrid 三路召回：
 | chunk 文件 | chunk_size | overlap | 召回方案 | Recall@3 | Recall@5 | Recall@10 | elapsed_sec |
+|---|---:|---:|---:|---:|---:|---:|---:|
 | `all_cs1024_ov50.jsonl` | 1024 | 50 | 纯向量 | 0.55 | 0.5667 | 0.6333 | 144.76 |
 | `all_cs1024_ov50.jsonl` | 1024 | 50 | 纯 BM25 | 0.6333 | 0.65 | 0.7333 | 144.76 |
 | `all_cs1024_ov50.jsonl` | 1024 | 50 | 混合召回 | 0.6833 | 0.7167 | 0.7502 | 144.76 |

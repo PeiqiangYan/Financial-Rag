@@ -58,12 +58,11 @@ index = all_cs1024_ov50_flat.faiss
 |----------|---------:|---------:|----------:|
 | Dense | 0.55 | 0.5667 | 0.6333 |
 | BM25 | 0.6167 | 0.65 | 0.7333 |
-| Hybrid | 0.6333 | 0.6667 | 0.7167 |
+| Hybrid | 0.6333 | 0.6667 | 0.7502 |
 
 
-- Hybrid 在 Recall@3 和 Recall@5 上最好，说明前排稳定性更强。
-- BM25 在 Recall@10 上略高于 Hybrid，说明关键词匹配对财报指标问题非常强。
-- 最终选择 `all_cs1024_ov50`，因为它在 Recall@3/5、运行速度和后续 reranker 候选质量之间更均衡。
+- Hybrid 在 Recall@3 ，Recall@5 和Recall@10上最好
+
 
 ### Chunk 参数对比摘要
 
@@ -116,4 +115,3 @@ Dense Top500 -> Local Hybrid Top20 -> Metadata-aware Rerank Top5
 - Metadata-aware Reranker 将 Overall Recall@5 从 `0.6833` 提升到 `0.8333`。
 - Top1 Acc 从 `0.4333` 提升到 `0.70`，说明 reranker 不只是“捞进 Top5”，也显著改善了首位证据质量。
 - compare 类型问题也有提升，但仍是最难类型，主要受两个目标文档都必须命中的约束影响。
-

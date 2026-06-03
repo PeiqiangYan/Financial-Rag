@@ -1,4 +1,4 @@
-# FinRAG
+# Financial-RAG
 
 FinRAG 是一个面向金融年报 / 研报的 RAG 项目
 

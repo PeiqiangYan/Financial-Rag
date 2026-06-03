@@ -51,44 +51,28 @@ pip install -r requirements.txt
 
 ## 1. PDF 解析
 
-把原始 PDF 放到 `data/pdfs/`，然后运行：
-
-```bash
-python src/parsing/hybrid_pdf_parser.py \
-  --input_dir data/pdfs \
-  --output_dir data/parsed
-```
+用 PyMuPDF 提取文本，用 pdfplumber 解析表格，处理表格、多栏/页眉页脚
 
 输出为 Markdown，表格会尽量保留为 `[TABLE_START] ... [TABLE_END]`。
 
 ## 2. 表格保护切块
 
-默认最终参数为 `chunk_size=1024, overlap=50`，输出 `all_cs1024_ov50.jsonl`：
-
-```bash
-python src/chunking/table_aware_chunker.py \
-  --input_dir data/parsed \
-  --output_dir data/chunks \
-  --chunk_size 1024 \
-  --overlap 50
-```
-
-如果要复现实验中的 3x3 切块对比：
-
-```bash
-python src/chunking/table_aware_chunker.py --run_experiments
-```
-
+选定最终参数为 `chunk_size=1024, overlap=50`，输出 `all_cs1024_ov50.jsonl`：(chunk切块对比的recall在后续)
+切块结果统计：
+| chunk_size | overlap | 文档数 | 总chunk数 | 文本chunk数 | 表格chunk数 | 平均长度 | 最短长度 | 最长长度 | 合并文件 |
+|---:|---:|---:|---:|---:|---:|---:|---:|---:|---|
+| 256 | 50 | 205 | 211805 | 195749 | 16056 | 237.59 | 30 | 5604 | `/9_data/ypq/FinRAG/data/chunks/all_cs256_ov50.jsonl` |
+| 256 | 100 | 205 | 280437 | 264381 | 16056 | 236.13 | 30 | 5604 | `/9_data/ypq/FinRAG/data/chunks/all_cs256_ov100.jsonl` |
+| 256 | 200 | 205 | 502521 | 486465 | 16056 | 237.49 | 30 | 5604 | `/9_data/ypq/FinRAG/data/chunks/all_cs256_ov200.jsonl` |
+| 512 | 50 | 205 | 103334 | 87278 | 16056 | 436.33 | 30 | 5604 | `/9_data/ypq/FinRAG/data/chunks/all_cs512_ov50.jsonl` |
+| 512 | 100 | 205 | 112878 | 96822 | 16056 | 440.77 | 30 | 5604 | `/9_data/ypq/FinRAG/data/chunks/all_cs512_ov100.jsonl` |
+| 512 | 200 | 205 | 142467 | 126411 | 16056 | 449.44 | 30 | 5604 | `/9_data/ypq/FinRAG/data/chunks/all_cs512_ov200.jsonl` |
+| 1024 | 50 | 205 | 60791 | 44735 | 16056 | 707.99 | 30 | 5604 | `/9_data/ypq/FinRAG/data/chunks/all_cs1024_ov50.jsonl` |
+| 1024 | 100 | 205 | 62512 | 46456 | 16056 | 716.83 | 30 | 5604 | `/9_data/ypq/FinRAG/data/chunks/all_cs1024_ov100.jsonl` |
+| 1024 | 200 | 205 | 66619 | 50563 | 16056 | 735.52 | 30 | 5604 | `/9_data/ypq/FinRAG/data/chunks/all_cs1024_ov200.jsonl` |
 ## 3. FAISS 建索引
 
 对最终 chunk 文件建 Flat index：
-
-```bash
-python src/indexing/build_faiss.py \
-  --chunks_file data/chunks/all_cs1024_ov50.jsonl \
-  --output_dir data/indexes \
-  --index_type flat
-```
 
 ## 4. 基础召回评测
 构建评测集：
@@ -117,11 +101,11 @@ python src/indexing/build_faiss.py \
 | `all_cs512_ov50.jsonl` | 512 | 50 | 纯 BM25 | 0.5 | 0.5833 | 0.65 | 169.12 |
 | `all_cs512_ov50.jsonl` | 512 | 50 | 混合召回 | 0.4833 | 0.5167 | 0.6 | 169.12 |
 | `all_cs1024_ov100.jsonl` | 1024 | 100 | 纯向量 | 0.5 | 0.55 | 0.6167 | 150.48 |
-| `all_cs1024_ov100.jsonl` | 1024 | 100 | 纯 BM25 | 0.6167 | 0.6667 | 0.7333 | 150.48 |
-| `all_cs1024_ov100.jsonl` | 1024 | 100 | 混合召回 | 0.6 | 0.6667 | 0.7 | 150.48 |
+| `all_cs1024_ov100.jsonl` | 1024 | 100 | 纯 BM25 | 0.6167 | 0.6333 | 0.7167 | 150.48 |
+| `all_cs1024_ov100.jsonl` | 1024 | 100 | 混合召回 | 0.6 | 0.6667 | 0.7167 | 150.48 |
 | `all_cs1024_ov50.jsonl` | 1024 | 50 | 纯向量 | 0.55 | 0.5667 | 0.6333 | 144.76 |
-| `all_cs1024_ov50.jsonl` | 1024 | 50 | 纯 BM25 | 0.6167 | 0.65 | 0.7333 | 144.76 |
-| `all_cs1024_ov50.jsonl` | 1024 | 50 | 混合召回 | 0.6333 | 0.6667 | 0.7167 | 144.76 |
+| `all_cs1024_ov50.jsonl` | 1024 | 50 | 纯 BM25 | 0.6333 | 0.65 | 0.7333 | 144.76 |
+| `all_cs1024_ov50.jsonl` | 1024 | 50 | 混合召回 | 0.6833 | 0.7167 | 0.7502 | 144.76 |
 | `all_cs1024_ov200.jsonl` | 1024 | 200 | 纯向量 | 0.5167 | 0.5667 | 0.6833 | 161.79 |
 | `all_cs1024_ov200.jsonl` | 1024 | 200 | 纯 BM25 | 0.6 | 0.65 | 0.7333 | 161.79 |
 | `all_cs1024_ov200.jsonl` | 1024 | 200 | 混合召回 | 0.6 | 0.65 | 0.7167 | 161.79 |
@@ -147,10 +131,10 @@ python src/indexing/build_faiss.py \
 在当前 60 条评测集上的最终结果：
 
 | Setting | Recall@5 | Top1 Acc | MRR@5 |
-|---|---:|---:|---:|
-| Hybrid Candidate Recall@20 | 0.8500 | - | - |
+| Hybrid Candidate Recall@20 | 0.85 | - | - |
 | Hybrid Top5 | 0.6833 | 0.4333 | 0.5364 |
-| Metadata-aware Rerank Top5 | 0.8333 | 0.7000 | 0.7528 |
+| Metadata-aware Rerank Top5 | 0.8333 | 0.7 | 0.7528 |
+| Delta Rerank - Hybrid | 0.15 | 0.2667 | 0.2164 |
 
 ## 7. Qwen3 证据绑定生成
 
@@ -179,7 +163,6 @@ CUDA_VISIBLE_DEVICES=0,7 python src/generation/qwen3_evidence_generator.py \
 ## 8. Streamlit Demo
 
 ```bash
-CUDA_VISIBLE_DEVICES=0,7 \
 PYTORCH_CUDA_ALLOC_CONF=expandable_segments:True \
 streamlit run src/demo/streamlit_finrag_demo.py \
   --server.address 0.0.0.0 \

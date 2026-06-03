@@ -131,6 +131,7 @@ pip install -r requirements.txt
 在当前 60 条评测集上的最终结果：
 
 | Setting | Recall@5 | Top1 Acc | MRR@5 |
+|---|---:|---:|---:|
 | Hybrid Candidate Recall@20 | 0.85 | - | - |
 | Hybrid Top5 | 0.6833 | 0.4333 | 0.5364 |
 | Metadata-aware Rerank Top5 | 0.8333 | 0.7 | 0.7528 |

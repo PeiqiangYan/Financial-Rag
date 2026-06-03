@@ -134,7 +134,7 @@ pip install -r requirements.txt
 |---|---:|---:|---:|
 | Hybrid Candidate Recall@20 | 0.85 | - | - |
 | Hybrid Top5 | 0.6833 | 0.4333 | 0.5364 |
-| Metadata-aware Rerank Top5 | 0.8333 | 0.7 | 0.7528 |
+| Rerank Top5 | 0.8333 | 0.7 | 0.7528 |
 | Delta Rerank - Hybrid | 0.15 | 0.2667 | 0.2164 |
 
 ## 7. Qwen3 证据绑定生成

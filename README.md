@@ -76,7 +76,7 @@ pip install -r requirements.txt
 
 ## 4. 基础召回评测
 构建评测集：
-   - 构建了60条 `(query, ground_truth_doc_id, answer)` 三元组
+   - 构建了120条 `(query, ground_truth_doc_id, answer)` 三元组
    - query 分三类：事实型（"宁德时代2025年研发费用是多少？"）、对比型（"宁德时代和比亚迪2025年谁的营业收入更高？"）、汇总型（"十四五”科技创新规划提出了哪些主要量化目标？"）
 
 评测 Dense、BM25、Hybrid 三路召回：
@@ -104,7 +104,7 @@ pip install -r requirements.txt
 
 ## 6. 最终重排评测
 
-在当前 60 条评测集上的最终结果：
+在当前 120 条评测集上的最终结果：
 
 | Setting | Recall@5 | Top1 Acc | MRR@5 |
 |---|---:|---:|---:|

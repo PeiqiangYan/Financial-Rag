@@ -109,9 +109,9 @@ pip install -r requirements.txt
 | Setting | Recall@5 | Top1 Acc | MRR@5 |
 |---|---:|---:|---:|
 | Hybrid Candidate Recall@20 | 0.85 | - | - |
-| Hybrid Top5 | 0.6833 | 0.4333 | 0.5364 |
+| Hybrid Top5 | 0.7167 | 0.4333 | 0.5364 |
 | Rerank Top5 | 0.8333 | 0.7 | 0.7528 |
-| Delta Rerank - Hybrid | 0.15 | 0.2667 | 0.2164 |
+| Delta Rerank - Hybrid | 0.12 | 0.2667 | 0.2164 |
 
 ## 7. Qwen3 证据绑定生成
 
